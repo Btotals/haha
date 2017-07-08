@@ -1,7 +1,7 @@
 'use strict'
 
 require('./globals')
-require('./setup-qcloud-sdk')
+//require('./setup-qcloud-sdk')
 
 const http = require('http')
 const express = require('express')
@@ -28,7 +28,7 @@ app.use(morgan('tiny'))
 // // parse `application/json`
 // app.use(bodyParser.json())
 
-app.use(['/customMessage', '/templateMessage', '/payment'], function(req, res, next) {
+app.use(['/record', '/customMessage', '/templateMessage', '/payment'], function(req, res, next) {
   var data=''
   req.setEncoding('utf8')
   req.on('data', function(chunk) {
@@ -50,13 +50,7 @@ process.on('uncaughtException', error => {
     console.log(error)
 })
 
-// 启动mongo
-MongoClient.connect('mongodb://127.0.0.1:27017/weknow', (err, database) => {
-  if (err) return console.log(err)
-  global.db = database
-  console.log("Connected successfully to mongodb.")
   // 启动server
-  http.createServer(app).listen(config.port, () => {
-      console.log('Express server listening on port: %s', config.port)
+  http.createServer(app).listen(config.service.port, () => {
+      console.log('Express server listening on port: %s', config.service.port)
   })
-})

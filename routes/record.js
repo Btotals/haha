@@ -9,7 +9,7 @@ module.exports = {
 }
 
 function postRecord(req, res) {
-  var params = req.body
+  var params = JSON.parse(req.body)
   console.log(params)
 
   var openid = params.openid
@@ -18,9 +18,9 @@ function postRecord(req, res) {
   var options = params.options.join(',')
   var result = params.result.join(',')
 
-  fs.readFile('./data.csv', function(err, data) {
+  fs.readFile('../data.csv', function(err, data) {
     data += `${openid},${score},${options},${result}\n`
-    fs.writeFile('./data.csv', data, function(err) {
+    fs.writeFile('../data.csv', data, function(err) {
       if (err) console.log(err)
       else console.log('record update success')
     })
@@ -30,7 +30,7 @@ function postRecord(req, res) {
 }
 
 function downloadRecord(req, res) {
-  var path = './data.csv'
+  var path = '../data.csv'
 
   res.download(path)
 }
@@ -38,15 +38,15 @@ function downloadRecord(req, res) {
 function getUserState(req, res) {
   var openid = req.query.openid
   console.log('openid', openid)
-  fs.readFile('./data.csv', 'utf-8', function(err, data) {
-    //console.log('data is', data)
+  fs.readFile('../data.csv', 'utf-8', function(err, data) {
+    console.log('err is', err)
     parse(data, function(error, output) {
       console.log('err is', error)
       if (error) {
         res.end(JSON.stringify(error))
         return
       }
-      //console.log('output is', output)
+      console.log('output is', output)
       var userState = output.find(function(item) {
         return item[0] === openid
       })
@@ -74,11 +74,11 @@ function saveOpinion(req, res) {
   var openid = req.body.openid
   var opinion = req.body.question
 
-  fs.readFile('./opinion.csv', 'utf-8', function(err, data) {
+  fs.readFile('../opinion.csv', 'utf-8', function(err, data) {
     parse(data, function(error, output) {
       output += `${openid},${opinion}`
 
-      fs.writeFile('./data.csv', data, function(err) {
+      fs.writeFile('../opinion.csv', data, function(err) {
         if (err) {
           console.log(err)
           res.end(JSON.stringify(err))
