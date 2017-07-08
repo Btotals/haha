@@ -1,41 +1,62 @@
-'use strict';
+'use strict'
 
-require('./globals');
-require('./setup-qcloud-sdk');
+require('./globals')
+require('./setup-qcloud-sdk')
 
-const http = require('http');
-const express = require('express');
-const bodyParser = require('body-parser');
-const morgan = require('morgan');
-const config = require('./config');
+const http = require('http')
+const express = require('express')
+const bodyParser = require('body-parser')
+const morgan = require('morgan')
+const config = require('./config')
 
-const app = express();
+const app = express()
 
-app.set('query parser', 'simple');
-app.set('case sensitive routing', true);
-app.set('jsonp callback name', 'callback');
-app.set('strict routing', true);
-app.set('trust proxy', true);
+app.set('query parser', 'simple')
+app.set('case sensitive routing', true)
+app.set('jsonp callback name', 'callback')
+app.set('strict routing', true)
+app.set('trust proxy', true)
 
-app.disable('x-powered-by');
+app.disable('x-powered-by')
 
 // 记录请求日志
-app.use(morgan('tiny'));
+app.use(morgan('tiny'))
 
-// parse `application/x-www-form-urlencoded`
-app.use(bodyParser.urlencoded({ extended: true }));
+// // parse `application/x-www-form-urlencoded`
+// app.use(bodyParser.urlencoded({ extended: true }))
 
-// parse `application/json`
-app.use(bodyParser.json());
+// // parse `application/json`
+// app.use(bodyParser.json())
 
-app.use('/', require('./routes'));
+app.use(['/customMessage', '/templateMessage', '/payment'], function(req, res, next) {
+  var data=''
+  req.setEncoding('utf8')
+  req.on('data', function(chunk) {
+     data += chunk
+  })
+
+  req.on('end', function() {
+    req.body = data
+    next()
+  })
+})
+
+
+
+app.use('/', require('./routes'))
 
 // 打印异常日志
 process.on('uncaughtException', error => {
-    console.log(error);
-});
+    console.log(error)
+})
 
-// 启动server
-http.createServer(app).listen(config.port, () => {
-    console.log('Express server listening on port: %s', config.port);
-});
+// 启动mongo
+MongoClient.connect('mongodb://127.0.0.1:27017/weknow', (err, database) => {
+  if (err) return console.log(err)
+  global.db = database
+  console.log("Connected successfully to mongodb.")
+  // 启动server
+  http.createServer(app).listen(config.port, () => {
+      console.log('Express server listening on port: %s', config.port)
+  })
+})
