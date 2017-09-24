@@ -15,5 +15,10 @@
     "lodash": "^4.16.1",
     "morgan": "^1.7.0",
     "mongodb": "~2.0"
+  },
+  "devDependencies": {
+    "csv-parse": "^1.2.3",
+    "formidable": "^1.1.1",
+    "urllib": "^2.25.0"
   }
 }
