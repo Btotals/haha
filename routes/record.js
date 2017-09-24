@@ -10,7 +10,7 @@ module.exports = {
 
 function postRecord(req, res) {
   var params = JSON.parse(req.body)
-  console.log(params)
+  // console.log(params)
 
   var openid = params.openid
   var score = params.score
