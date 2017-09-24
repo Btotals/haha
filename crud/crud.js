@@ -38,16 +38,19 @@ module.exports = {
   getQuestions: function(query, callback) {
     var questionId = query.questionId
 
-    db.collection('questions').findOne({
+    db.collection('questions').find({
       // _id: ObjectId(questionId)
-    }, function(err, questions) {
+    }, function(err, res) {
       // console.log('find questions by _id', questionId, 'success, questions is', JSON.stringify(questions))
 
-      if (err) {
-        callback(err)
-      } else {
-        callback(null, questions)
-      }
+      res.toArray().then(function(docs) {
+        callback(null, {
+          questions: docs
+        })
+      }).catch(function(parseErr) {
+        callback(parseErr)
+      })
+      
     })
   },
 

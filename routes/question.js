@@ -7,7 +7,8 @@ function getQuestions(req, res) {
   crud.getQuestions({
     questionId
   }, (err, result) => {
-    res.end(JSON.stringify(result))
+    // console.log(result)
+    res.end(JSON.stringify(result.questions))
   })
 }
 

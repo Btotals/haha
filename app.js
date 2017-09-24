@@ -28,8 +28,9 @@ app.use(morgan('tiny'))
 // app.use(bodyParser.urlencoded({ extended: true }))
 
 // // parse `application/json`
-// app.use(bodyParser.json())
+app.use(bodyParser.json())
 
+/*
 app.use(['/record', '/customMessage', '/templateMessage', '/payment'], function(req, res, next) {
   var data=''
   req.setEncoding('utf8')
@@ -42,7 +43,7 @@ app.use(['/record', '/customMessage', '/templateMessage', '/payment'], function(
     next()
   })
 })
-
+*/
 
 
 app.use('/', require('./routes'))
@@ -53,12 +54,13 @@ process.on('uncaughtException', error => {
 })
 
 // 启动server
-MongoClient.connect('mongodb://127.0.0.1:27017/questions', (err, database) => {
+MongoClient.connect('mongodb://127.0.0.1:27017/db', (err, database) => {
   if (err) return console.log(err)
   global.db = database
   console.log("Connected successfully to mongodb.")
   // 启动server
-  http.createServer(app).listen(config.port, () => {
-      console.log('Express server listening on port: %s', config.port)
+  http.createServer(app).listen(config.service.port, () => {
+      console.log('Express server listening on port: %s', config.service.port)
   })
 })
+
