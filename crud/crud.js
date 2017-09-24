@@ -39,9 +39,9 @@ module.exports = {
     var questionId = query.questionId
 
     db.collection('questions').findOne({
-      _id: ObjectId(questionId)
+      // _id: ObjectId(questionId)
     }, function(err, questions) {
-      console.log('find questions by _id', questionId, 'success, questions is', JSON.stringify(questions))
+      // console.log('find questions by _id', questionId, 'success, questions is', JSON.stringify(questions))
 
       if (err) {
         callback(err)

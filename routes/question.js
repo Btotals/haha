@@ -2,9 +2,7 @@ const crud = require('../crud/crud')
 
 
 function getQuestions(req, res) {
-  const params = JSON.parse(req.body)
-
-  const questionId = params.questionId
+  const questionId = req.body.questionId
 
   crud.getQuestions({
     questionId

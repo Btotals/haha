@@ -9,6 +9,8 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const config = require('./config')
 
+const MongoClient = require('mongodb').MongoClient
+
 const app = express()
 
 app.set('query parser', 'simple')
@@ -50,7 +52,13 @@ process.on('uncaughtException', error => {
     console.log(error)
 })
 
+// 启动server
+MongoClient.connect('mongodb://127.0.0.1:27017/questions', (err, database) => {
+  if (err) return console.log(err)
+  global.db = database
+  console.log("Connected successfully to mongodb.")
   // 启动server
-  http.createServer(app).listen(config.service.port, () => {
-      console.log('Express server listening on port: %s', config.service.port)
+  http.createServer(app).listen(config.port, () => {
+      console.log('Express server listening on port: %s', config.port)
   })
+})
