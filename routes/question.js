@@ -9,6 +9,7 @@ function getQuestions(req, res) {
     questionId
   }, (err, result) => {
     // console.log(result)
+    res.set({ 'content-type': 'application/json; charset=utf-8' })
     res.end(JSON.stringify(result.questions))
   })
 }
