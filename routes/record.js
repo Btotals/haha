@@ -1,6 +1,8 @@
 const fs = require('fs')
 const parse = require('csv-parse')
 
+const crud = require('../crud/crud')
+
 module.exports = {
   postRecord: postRecord,
   downloadRecord: downloadRecord,
@@ -8,25 +10,45 @@ module.exports = {
   saveOpinion: saveOpinion
 }
 
+// function postRecord(req, res) {
+//   var params = JSON.parse(req.body)
+//   // console.log(params)
+
+//   var openid = params.openid
+//   var score = params.score
+
+//   var options = params.options.join(',')
+//   var result = params.result.join(',')
+
+//   fs.readFile('../data.csv', function(err, data) {
+//     data += `${openid},${score},${options},${result}\n`
+//     fs.writeFile('../data.csv', data, function(err) {
+//       if (err) console.log(err)
+//       else console.log('record update success')
+//     })
+//   })
+
+//   res.end('ok')
+// }
+
 function postRecord(req, res) {
-  var params = JSON.parse(req.body)
-  // console.log(params)
+  var params = req.body
 
-  var openid = params.openid
-  var score = params.score
+  console.log('post record with params', JSON.stringify(params))
 
-  var options = params.options.join(',')
-  var result = params.result.join(',')
+  // var questionId = params.questionId
+  // var openId = params.openId
+  // var score = params.score
+  // var options = params.options
+  // var result = params.result
 
-  fs.readFile('../data.csv', function(err, data) {
-    data += `${openid},${score},${options},${result}\n`
-    fs.writeFile('../data.csv', data, function(err) {
-      if (err) console.log(err)
-      else console.log('record update success')
-    })
+  crud.insertGrade(params, function(err) {
+    if (err) {
+      res.end(JSON.stringify(err))
+    } else {
+      res.end()
+    }
   })
-
-  res.end('ok')
 }
 
 function downloadRecord(req, res) {

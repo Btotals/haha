@@ -19,7 +19,11 @@ router.get('/downloadRecord', record.downloadRecord)
 router.get('/userState', record.getUserState)
 router.post('/record', record.postRecord)
 
+router.post('/answer', question.postAnswers)
+
 router.get('/question', question.getQuestions)
+
+
 /*
 router.get('/testRequest', require('./testRequest'))
 router.all('/payment', require('./payment'))

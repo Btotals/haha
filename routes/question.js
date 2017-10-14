@@ -1,5 +1,6 @@
-const crud = require('../crud/crud')
+'use strict'
 
+const crud = require('../crud/crud')
 
 function getQuestions(req, res) {
   const questionId = req.body.questionId
@@ -12,6 +13,24 @@ function getQuestions(req, res) {
   })
 }
 
+function postAnswers(req, res) {
+  const body = req.body
+
+  const openid = body.openid
+  const score = params.score
+
+  const options = params.options
+  const result = params.result
+
+  crud.insertGrade({
+    openid,
+    score,
+    options,
+    result
+  })
+}
+
 module.exports = {
-  getQuestions
+  getQuestions,
+  postAnswers
 }

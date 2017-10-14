@@ -1,40 +1,6 @@
 const ObjectId = require('mongodb').ObjectId
 
 module.exports = {
-  insertSurvey: function(survey, callback) {
-    db.collection('survey').insert(survey, function(err) {
-      if (err) {
-        callback(err)
-      } else {
-        callback(null, {
-          surveyId: survey._id
-        })
-      }
-    })
-  },
-
-  getSurveys: function(query, callback) {
-    var openid = query.openid
-
-    db.collection('survey').find({
-      openid
-    }, function(err, res) {
-      console.log('', res)
-
-      if (err) {
-        callback(err)
-      } else {
-        res.toArray().then(function(docs) {
-          callback(null, {
-            surveys: docs
-          })
-        }).catch(function(parseErr) {
-          callback(parseErr)
-        })
-      }
-    })
-  },
-
   getQuestions: function(query, callback) {
     var questionId = query.questionId
 
@@ -50,45 +16,39 @@ module.exports = {
       }).catch(function(parseErr) {
         callback(parseErr)
       })
-      
+
     })
   },
 
   getGrade: function(query, callback) {
-    var id = query.id
+    var openid = query.openid
 
-    db.collection('grade').findOne({
-      _id: ObjectId(id)
-    }, function(err, grade) {
-      console.log('findOne grade by _id', _id, 'success, grade is', grade)
-
+    db.collection('grade').find({
+      openid
+    }, function(err, docs) {
       if (err) {
         callback(err)
-      } else {
-        callback(null, grade)
       }
+
+      console.log('find grade by openid', openid, 'success')
+
+      res.toArray().then(function(docs) {
+        callback(null, {
+          grades: docs
+        })
+      }).catch(function(parseErr) {
+        callback(parseErr)
+      })
+
     })
   },
 
-  updateSurvey: function(survey, callback) {
-    var id = survey.id
-    var attender = survey.attender
-
-    console.log('survey id', id, 'updated with attender', JSON.stringify(attender))
-
-    db.collection('survey').findOneAndUpdate({
-      _id: ObjectId(id)
-    }, {
-      $push: {
-        attenders: attender
-      }
-    }, function(err, res) {
+  insertGrade: function(grade, callback) {
+    db.collection('grade').insert(grade, function(err) {
       if (err) {
-        console.log('updateSurvey error', err)
         callback(err)
       } else {
-        console.log('updateSurvey success, res is', res)
-        callback(null, res.value)
+        callback(null, {})
       }
     })
   }
