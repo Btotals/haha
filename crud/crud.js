@@ -25,7 +25,7 @@ module.exports = {
 
     db.collection('grade').find({
       openid
-    }, function(err, docs) {
+    }, function(err, res) {
       if (err) {
         callback(err)
       }

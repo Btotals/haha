@@ -65,8 +65,16 @@ function getUserState(req, res) {
   crud.getGrade(req.query, function(err, data) {
     if (err) {
       res.end(JSON.stringify(err))
+    } else if (data.grades.length) {
+      res.end(JSON.stringify({
+        existed: true,
+        grades: data.grades
+      }))
     } else {
-      res.end(JSON.stringify(data))
+      res.end(JSON.stringify({
+        existed: false,
+        grades: null
+      }))
     }
   })
   // fs.readFile('../data.csv', 'utf-8', function(err, data) {
