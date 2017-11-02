@@ -73,7 +73,7 @@ function getUserState(req, res) {
     } else {
       res.end(JSON.stringify({
         existed: false,
-        grades: null
+        grades: []
       }))
     }
   })
