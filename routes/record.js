@@ -91,7 +91,7 @@ function downloadRecord(req, res) {
       res.setHeader('Content-Description', 'File Transfer')
       res.setHeader('Content-Type', 'application/csv; charset=utf-8')
       res.setHeader('Content-Disposition', 'attachment; filename=data.csv')
-      res.send(csv)
+      res.send('\uFEFF' + csv)
       // res.end(JSON.stringify({
       //   existed: true,
       //   grades: data.grades
