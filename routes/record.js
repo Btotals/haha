@@ -61,28 +61,32 @@ function downloadRecord(req, res) {
   }
 
   crud.getGrade(query, function(err, data) {
-    console.log('download Record:', data)
+    // console.log('download Record:', data)
 
     if (err) {
       res.end(JSON.stringify(err))
     } else if (data.grades.length) {
       const fields = ['openid', 'score']
+      const fieldNames = ['openid', 'score']
       const length = data.grades[0].options.length
 
       for (let i = 0; i < length; i++) {
         fields.push('options.' + i)
+        fieldNames.push(`第${(i + 1)}题选项`)
       }
 
       for (let i = 0; i < length; i++) {
         fields.push('result.' + i)
+        fieldNames.push(`第${(i + 1)}题结果`)
       }
 
       const csv = json2csv({
         data: data.grades,
-        fields: fields
+        fields: fields,
+        fieldNames: fieldNames
       })
 
-      console.log('parsed csv:', csv)
+      // console.log('parsed csv:', csv)
 
       res.setHeader('Content-Description', 'File Transfer')
       res.setHeader('Content-Type', 'application/csv; charset=utf-8')

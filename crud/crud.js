@@ -26,7 +26,7 @@ module.exports = {
         callback(err)
       }
 
-      console.log('find grade by query', query, 'success')
+      // console.log('find grade by query', query, 'success')
       // console.log()
       res.toArray().then(function(docs) {
         callback(null, {
