@@ -1,3 +1,5 @@
+'use strict'
+
 const fs = require('fs')
 const parse = require('csv-parse')
 
@@ -59,6 +61,8 @@ function downloadRecord(req, res) {
   }
 
   crud.getGrade(query, function(err, data) {
+    console.log('download Record:', data)
+
     if (err) {
       res.end(JSON.stringify(err))
     } else if (data.grades.length) {
@@ -74,7 +78,7 @@ function downloadRecord(req, res) {
       }
 
       const csv = json2csv({
-        data: date.grades,
+        data: data.grades,
         fields: fields
       })
 
