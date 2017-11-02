@@ -21,11 +21,7 @@ module.exports = {
   },
 
   getGrade: function(query, callback) {
-    var openid = query.openid
-
-    db.collection('grade').find({
-      openid
-    }, function(err, res) {
+    db.collection('grade').find(query, function(err, res) {
       if (err) {
         callback(err)
       }

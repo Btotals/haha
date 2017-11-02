@@ -3,6 +3,8 @@ const parse = require('csv-parse')
 
 const crud = require('../crud/crud')
 
+const json2csv = require('json2csv')
+
 module.exports = {
   postRecord: postRecord,
   downloadRecord: downloadRecord,
@@ -52,9 +54,47 @@ function postRecord(req, res) {
 }
 
 function downloadRecord(req, res) {
-  var path = '../data.csv'
+  var query = {
+    questionId: req.query.questionId
+  }
 
-  res.download(path)
+  crud.getGrade(query, function(err, data) {
+    if (err) {
+      res.end(JSON.stringify(err))
+    } else if (data.grades.length) {
+      const fields = ['openid', 'score']
+      const length = data.grades[0].options.length
+
+      for (let i = 0; i < length; i++) {
+        fields.push('options.' + i)
+      }
+
+      for (let i = 0; i < length; i++) {
+        fields.push('result.' + i)
+      }
+
+      const csv = json2csv({
+        data: date.grades,
+        fields: fields
+      })
+
+      console.log('parsed csv:', csv)
+
+      res.setHeader('Content-Description', 'File Transfer')
+      res.setHeader('Content-Type', 'application/csv; charset=utf-8')
+      res.setHeader('Content-Disposition', 'attachment; filename=data.csv')
+      res.send(csv)
+      // res.end(JSON.stringify({
+      //   existed: true,
+      //   grades: data.grades
+      // }))
+    } else {
+      res.end(JSON.stringify({
+        existed: false,
+        grades: null
+      }))
+    }
+  })
 }
 
 function getUserState(req, res) {
@@ -62,7 +102,11 @@ function getUserState(req, res) {
   // var questionId = req.query.questionId
   // console.log('openid', openid, 'questionId', questionId)
 
-  crud.getGrade(req.query, function(err, data) {
+  var query = {
+    openid: req.query.openid
+  }
+
+  crud.getGrade(query, function(err, data) {
     if (err) {
       res.end(JSON.stringify(err))
     } else if (data.grades.length) {
