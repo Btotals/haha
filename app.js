@@ -53,10 +53,15 @@ process.on('uncaughtException', error => {
     console.log(error)
 })
 
+var q = require('../a.js')
+
 // 启动server
 MongoClient.connect('mongodb://127.0.0.1:27017/db', (err, database) => {
   if (err) return console.log(err)
   global.db = database
+
+  // db.collection('questions').insert(q, function(err) { console.log(err) })
+
   console.log("Connected successfully to mongodb.")
   // 启动server
   http.createServer(app).listen(config.service.port, () => {

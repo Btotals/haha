@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>generator</title>
+  <meta charset="utf-8">
+</head>
+<link rel="stylesheet" type="text/css" href="./index.css">
+<script type="text/javascript" src="./jquery.js"></script>
+<script type="text/javascript" src="./index.js"></script>
+<body>
+  <form id="questions">
+    <div id="question-area"></div>
+    <button id="add">新建</button>
+    <button id="submit" type="submit">生成</button>
+    <textarea id="result"></textarea>
+  </form>
+
+
+</body>
+<template id="question">
+  <div class="question-item">
+    <!-- <div>1</div> -->
+    <div>
+      case
+      <br>
+      <textarea class="case"></textarea>
+    </div>
+    <div>
+      description
+      <br>
+      <textarea class="description"></textarea>
+    </div>
+    <div>
+      <div>A. <input type="text" name="" class="label"></div>
+      <div>B. <input type="text" name="" class="label"></div>
+      <div>C. <input type="text" name="" class="label"></div>
+      <div>D. <input type="text" name="" class="label"></div>
+    </div>
+    <div>
+      answer
+      <br>
+      <input type="text" name="" placeholder="" class="answer">
+    </div>
+    <div>
+      tips
+      <br>
+      <textarea class="tips"></textarea>
+    </div>
+  </div>
+</template>
+</html>
